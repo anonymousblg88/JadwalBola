@@ -16,13 +16,22 @@
       margin:0;
       font:14.5px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
-
-      /* === Background gambar + overlay === */
-      background: linear-gradient(to right, #000000, #5c4d00, #000000); no-repeat center center fixed;
-      background-size: cover;
+      /* Background gradient */
+      background: linear-gradient(to right, #000000, #5c4d00, #000000) fixed;
     }
+
+    /* Canvas untuk efek bintang (di belakang konten) */
+    #starCanvas{
+      position: fixed;
+      inset: 0;          /* top:0; right:0; bottom:0; left:0 */
+      pointer-events: none;
+      z-index: 0;        /* di atas background, di bawah konten */
+      display:block;
+    }
+
     .wrap{
       max-width:1100px; margin:32px auto; padding:0 16px;
+      position: relative; z-index: 1;   /* konten di atas canvas */
     }
     header{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -75,10 +84,12 @@
   </style>
 </head>
 <body>
+  <!-- Canvas bintang -->
+  <canvas id="starCanvas"></canvas>
+
   <div class="wrap">
     <header>
       <div class="brand">
-        <!-- Logo -->
         <img src="https://i.ibb.co/HLwQvqry/Desain-tanpa-judul.png" alt="Logo" class="logo" />
         <div>
           <h1>Jadwal & Live Score Bola</h1>
@@ -120,6 +131,7 @@
     </div>
   </div>
 
+  <!-- Script utama (auto-refresh iframe) -->
   <script>
     (function () {
       const frame = document.getElementById('scorebatFrame');
@@ -128,22 +140,15 @@
       const status = document.getElementById('status');
       let timer = null;
 
-      function setStatus(text) {
-        status.textContent = 'Status: ' + text;
-      }
+      function setStatus(text) { status.textContent = 'Status: ' + text; }
       function cacheBustedUrl() {
         const base = 'https://www.scorebat.com/embed/livescore/';
         const ts = Date.now();
         return base + (base.includes('?') ? '&' : '?') + '_ts=' + ts;
       }
       function reloadFrame() {
-        try {
-          setStatus('memuat ulang…');
-          frame.src = cacheBustedUrl();
-        } catch (e) {
-          setStatus('gagal memuat ulang');
-          console.error(e);
-        }
+        try { setStatus('memuat ulang…'); frame.src = cacheBustedUrl(); }
+        catch (e) { setStatus('gagal memuat ulang'); console.error(e); }
       }
       frame.addEventListener('load', () => setStatus('terkoneksi'));
       frame.addEventListener('error', () => setStatus('gagal memuat'));
@@ -155,13 +160,96 @@
         if (ms > 0) {
           timer = setInterval(reloadFrame, ms);
           setStatus('auto-refresh tiap ' + Math.round(ms/60000) + ' menit');
-        } else {
-          setStatus('auto-refresh off');
-        }
+        } else setStatus('auto-refresh off');
       }
       intervalSel.addEventListener('change', applyInterval);
       applyInterval();
     })();
+  </script>
+
+  <!-- Script efek bintang -->
+  <script>
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const groupCount = 20;
+    const groups = [];
+
+    function random(min, max) { return Math.random() * (max - min) + min; }
+
+    function createStar(x, y, radius, points = 5) {
+      const step = Math.PI / points;
+      ctx.beginPath();
+      for (let i = 0; i < 2 * points; i++) {
+        const angle = i * step;
+        const r = i % 2 === 0 ? radius : radius / 2;
+        ctx.lineTo(x + r * Math.cos(angle), y + r * Math.sin(angle));
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    for (let i = 0; i < groupCount; i++) {
+      const starCount = Math.floor(random(10, 20));
+      const stars = [];
+      const baseX = random(0, width);
+      const baseY = random(0, height);
+
+      for (let j = 0; j < starCount; j++) {
+        stars.push({
+          x: baseX + random(-50, 50),
+          y: baseY + random(-50, 50),
+          dx: random(-0.3, 0.3),
+          dy: random(-0.3, 0.3),
+          size: random(3, 6)
+        });
+      }
+      groups.push(stars);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+
+      groups.forEach(stars => {
+        stars.forEach(star => {
+          star.x += star.dx;
+          star.y += star.dy;
+
+          if (star.x < 0 || star.x > width) star.dx *= -1;
+          if (star.y < 0 || star.y > height) star.dy *= -1;
+
+          ctx.fillStyle = 'rgba(255, 210, 31, 0.9)'; // emas kekuningan
+          createStar(star.x, star.y, star.size, 5);
+        });
+
+        // garis koneksi antar bintang dekat
+        for (let i = 0; i < stars.length; i++) {
+          for (let j = i + 1; j < stars.length; j++) {
+            const a = stars[i], b = stars[j];
+            const dist = Math.hypot(a.x - b.x, a.y - b.y);
+            if (dist < 100) {
+              ctx.strokeStyle = 'rgba(107, 107, 127, 0.4)';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+    draw();
   </script>
 </body>
 </html>
