@@ -34,22 +34,26 @@
       max-width:1100px; margin:32px auto; padding:0 16px;
       position: relative; z-index: 1;   /* konten di atas canvas */
     }
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      margin-bottom:16px;
-    }
+    header {
+  display: flex;
+  justify-content: center; /* posisi kotak di tengah horizontal */
+  margin-bottom: 16px;
+}
     /* Kartu untuk header/branding */
-.headerCard{
+.headerCard {
   background: linear-gradient(180deg, rgba(18,23,34,0.85), rgba(14,19,28,0.78));
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px); /* safari */
+  -webkit-backdrop-filter: blur(6px);
   border: 1px solid #1f2530;
   border-radius: 14px;
   box-shadow: 0 10px 30px #00000055, inset 0 1px 0 #242a36;
   padding: 14px 16px;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 2; /* pastikan di atas canvas bintang */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  max-width: 700px; /* biar tidak kepanjangan */
 }
 
 /* Rapikan isi header di dalam kartu */
