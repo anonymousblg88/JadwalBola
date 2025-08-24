@@ -37,6 +37,26 @@
       display:flex; align-items:center; justify-content:space-between; gap:12px;
       margin-bottom:16px;
     }
+    /* Kartu untuk header/branding */
+.headerCard{
+  background: linear-gradient(180deg, rgba(18,23,34,0.85), rgba(14,19,28,0.78));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); /* safari */
+  border: 1px solid #1f2530;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px #00000055, inset 0 1px 0 #242a36;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2; /* pastikan di atas canvas bintang */
+}
+
+/* Rapikan isi header di dalam kartu */
+.headerCard .headerInner{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+
+.headerCard .brand{display:flex; align-items:center; gap:12px;}
     .brand{display:flex; align-items:center; gap:12px;}
     .logo{
       width:40px; height:40px; border-radius:10px;
@@ -89,14 +109,16 @@
 
   <div class="wrap">
     <header>
-      <div class="brand">
-        <img src="https://i.ibb.co/HLwQvqry/Desain-tanpa-judul.png" alt="Logo" class="logo" />
-        <div>
-          <h1>Jadwal & Live Score Bola</h1>
-          <div class="sub">Nyari Situs Terpercaya Disini PAPANATASSLOT</div>
-        </div>
+<div class="headerCard">
+  <div class="headerInner">
+    <div class="brand">
+      <img src="https://i.ibb.co/HLwQvqry/Desain-tanpa-judul.png" alt="Logo" class="logo" />
+      <div>
+        <h1>Jadwal & Live Score Bola</h1>
+        <div class="sub">Nyari Situs Terpercaya Disini PAPANATASSLOT</div>
       </div>
-      <div class="badge" id="status">Status: memuat…</div>
+    </div>
+    <div class="badge" id="status">Status: memuat…</div>
     </header>
 
     <div class="card">
