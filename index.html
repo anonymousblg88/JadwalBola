@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jadwal Bola – Live Score (Scorebat)</title>
+  <style>
+    :root{
+      --bg:#0f1115; --card:#11141a; --text:#e9edf1; --sub:#a9b3c1;
+      --accent:#f5c242; --accent2:#2a2f3a;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background: radial-gradient(1200px 800px at 10% -10%, #1a1f2a 0%, #0c0f14 60%, #090b10 100%) fixed;
+      color:var(--text); font:14.5px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .wrap{
+      max-width:1100px; margin:32px auto; padding:0 16px;
+    }
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-bottom:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand .dot{
+      width:12px; height:12px; border-radius:50%;
+      background:conic-gradient(from 0deg,#ffd86b,#f5c242,#ff9a00,#ffd86b);
+      box-shadow:0 0 20px #f5c24255;
+    }
+    h1{font-size:18px; margin:0}
+    .sub{color:var(--sub); font-size:13px}
+    .card{
+      background:linear-gradient(180deg, #121722, #0e131c);
+      border:1px solid #1f2530; border-radius:var(--radius);
+      box-shadow:0 10px 30px #00000055, inset 0 1px 0 #242a36;
+      overflow:clip;
+    }
+    .controls{
+      display:flex; gap:8px; padding:12px; align-items:center; justify-content:flex-end;
+      background:linear-gradient(180deg, #121722, #0f141d);
+      border-bottom:1px solid #1f2530;
+    }
+    button, select{
+      color:var(--text); background:#151b25; border:1px solid #283142;
+      border-radius:10px; padding:8px 12px; cursor:pointer;
+    }
+    button:hover{border-color:#3a475f}
+    .accent{background:linear-gradient(180deg,#2b3546,#1f2837); border-color:#3a475f}
+    .accent:hover{border-color:#586887}
+    .badge{
+      padding:6px 10px; border-radius:999px; background:#1a2130; border:1px solid #273046; color:var(--sub);
+      display:flex; align-items:center; gap:8px;
+    }
+    .iframeWrap{
+      width:100%; height:82vh; /* responsif, sesuaikan tinggi */
+      background:#0a0d12; position:relative;
+    }
+    iframe{
+      width:100%; height:100%; border:0; display:block; background:#0a0d12;
+    }
+    .footer{
+      padding:10px 14px; border-top:1px solid #1f2530; color:var(--sub); font-size:12px;
+      display:flex; justify-content:space-between; align-items:center; gap:8px;
+    }
+    .link{color:#d7b861; text-decoration:none}
+    .link:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <div>
+          <h1>Jadwal & Live Score Bola</h1>
+          <div class="sub">Sumber data: Scorebat – auto-update</div>
+        </div>
+      </div>
+      <div class="badge" id="status">Status: memuat…</div>
+    </header>
+
+    <div class="card">
+      <div class="controls">
+        <button class="accent" id="btnReload" title="Muat ulang sekarang">⟲ Muat Ulang</button>
+        <label class="sub" for="interval">Auto-refresh:</label>
+        <select id="interval" title="Interval auto-refresh">
+          <option value="0">Off</option>
+          <option value="120000">2 menit</option>
+          <option value="300000" selected>5 menit</option>
+          <option value="600000">10 menit</option>
+        </select>
+      </div>
+
+      <div class="iframeWrap">
+        <!-- Embed resmi Scorebat (disarankan) -->
+        <iframe
+          id="scorebatFrame"
+          title="Scorebat LiveScore"
+          src="https://www.scorebat.com/embed/livescore/"
+          allow="clipboard-read; clipboard-write; fullscreen; encrypted-media"
+          referrerpolicy="no-referrer-when-downgrade"
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <div class="footer">
+        <span>Tips: scroll di dalam widget untuk lihat semua pertandingan.</span>
+        <span>
+          Powered by <a class="link" href="https://www.scorebat.com/embed/livescore/" target="_blank" rel="noopener">Scorebat LiveScore</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const frame = document.getElementById('scorebatFrame');
+      const reloadBtn = document.getElementById('btnReload');
+      const intervalSel = document.getElementById('interval');
+      const status = document.getElementById('status');
+      let timer = null;
+
+      function setStatus(text) {
+        status.textContent = 'Status: ' + text;
+      }
+
+      function cacheBustedUrl() {
+        const base = 'https://www.scorebat.com/embed/livescore/';
+        // tambahkan query anti-cache agar benar-benar refresh jika jaringan macet
+        const ts = Date.now();
+        return base + (base.includes('?') ? '&' : '?') + '_ts=' + ts;
+      }
+
+      function reloadFrame() {
+        try {
+          setStatus('memuat ulang…');
+          // Simpel: langsung set src baru (cache-bust)
+          frame.src = cacheBustedUrl();
+        } catch (e) {
+          setStatus('gagal memuat ulang');
+          console.error(e);
+        }
+      }
+
+      frame.addEventListener('load', () => setStatus('terkoneksi'));
+      frame.addEventListener('error', () => setStatus('gagal memuat'));
+
+      reloadBtn.addEventListener('click', reloadFrame);
+
+      function applyInterval() {
+        if (timer) clearInterval(timer);
+        const ms = Number(intervalSel.value);
+        if (ms > 0) {
+          timer = setInterval(reloadFrame, ms);
+          setStatus('auto-refresh tiap ' + Math.round(ms/60000) + ' menit');
+        } else {
+          setStatus('auto-refresh off');
+        }
+      }
+
+      intervalSel.addEventListener('change', applyInterval);
+      applyInterval();
+    })();
+  </script>
+</body>
+</html>
