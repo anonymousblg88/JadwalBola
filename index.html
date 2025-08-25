@@ -213,7 +213,7 @@
         <a href="https://klikblg.com/wa-pas" target="_blank" class="btn-daftar2">✦ Whatsapp </a>
         <a href="https://t.me/piralbangetsih" target="_blank" class="btn-daftar3">✦ Telegram </a>
         <a href="https://direct.lc.chat/19144129/" target="_blank" class="btn-daftar4">✦ LiveChat </a>
-        <button class="accent" id="btnReload" title="Muat ulang sekarang">⟲ Muat Ulang</button>
+        <button href="https://anonymousblg88.github.io/JadwalBola/" target="_blank" class="btn-daftar4">⟲ Muat Ulang</button>
         <label class="sub" for="interval">Auto-refresh:</label>
         <select id="interval" title="Interval auto-refresh">
           <option value="0">Off</option>
@@ -258,13 +258,6 @@
         const ts = Date.now();
         return base + (base.includes('?') ? '&' : '?') + '_ts=' + ts;
       }
-      function reloadFrame() {
-        try { setStatus('memuat ulang…'); frame.src = cacheBustedUrl(); }
-        catch (e) { setStatus('gagal memuat ulang'); console.error(e); }
-      }
-      frame.addEventListener('load', () => setStatus('terkoneksi'));
-      frame.addEventListener('error', () => setStatus('gagal memuat'));
-      reloadBtn.addEventListener('click', reloadFrame);
 
       function applyInterval() {
         if (timer) clearInterval(timer);
