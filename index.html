@@ -213,14 +213,6 @@
         <a href="https://klikblg.com/wa-pas" target="_blank" class="btn-daftar2">✦ Whatsapp </a>
         <a href="https://t.me/piralbangetsih" target="_blank" class="btn-daftar3">✦ Telegram </a>
         <a href="https://direct.lc.chat/19144129/" target="_blank" class="btn-daftar4">✦ LiveChat </a>
-        <button href="https://anonymousblg88.github.io/JadwalBola/" target="_blank" class="btn-daftar4">⟲ Muat Ulang</button>
-        <label class="sub" for="interval">Auto-refresh:</label>
-        <select id="interval" title="Interval auto-refresh">
-          <option value="0">Off</option>
-          <option value="120000">2 menit</option>
-          <option value="300000" selected>5 menit</option>
-          <option value="600000">10 menit</option>
-        </select>
       </div>
 
       <div class="iframeWrap">
@@ -242,36 +234,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Script utama (auto-refresh iframe) -->
-  <script>
-    (function () {
-      const frame = document.getElementById('scorebatFrame');
-      const reloadBtn = document.getElementById('btnReload');
-      const intervalSel = document.getElementById('interval');
-      const status = document.getElementById('status');
-      let timer = null;
-
-      function setStatus(text) { status.textContent = 'Status: ' + text; }
-      function cacheBustedUrl() {
-        const base = 'https://www.scorebat.com/embed/livescore/';
-        const ts = Date.now();
-        return base + (base.includes('?') ? '&' : '?') + '_ts=' + ts;
-      }
-
-      function applyInterval() {
-        if (timer) clearInterval(timer);
-        const ms = Number(intervalSel.value);
-        if (ms > 0) {
-          timer = setInterval(reloadFrame, ms);
-          setStatus('auto-refresh tiap ' + Math.round(ms/60000) + ' menit');
-        } else setStatus('auto-refresh off');
-      }
-      intervalSel.addEventListener('change', applyInterval);
-      applyInterval();
-    })();
-  </script>
-
   <!-- Script efek bintang -->
   <script>
     const canvas = document.getElementById('starCanvas');
