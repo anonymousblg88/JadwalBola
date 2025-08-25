@@ -107,11 +107,20 @@
 }
 
 /* Varian warna */
-.btn--gold  { background:linear-gradient(90deg,#f5c242,#d7a600); border-color:#f0b400; }
-.btn--green { background:linear-gradient(90deg,#8fce00,#6aa84f); border-color:#4a8f1f; }
-.btn--blue  { background:linear-gradient(90deg,#9fc5e8,#3d85c6); border-color:#2f69a2; }
-.btn--red   { background:linear-gradient(90deg,#f44336,#e06666); border-color:#b83f3a; }
+.btn--gold  { background:linear-gradient(90deg,#f5c242,#d7a600); border-color:#ffffff; }
+.btn--green { background:linear-gradient(90deg,#8fce00,#6aa84f); border-color:#ffffff; }
+.btn--blue  { background:linear-gradient(90deg,#9fc5e8,#3d85c6); border-color:#ffffff; }
+.btn--red   { background:linear-gradient(90deg,#f44336,#e06666); border-color:#ffffff; }
 
+/* Hover override: semua tombol berubah abu-abu */
+.btn--gold:hover,
+.btn--green:hover,
+.btn--blue:hover,
+.btn--red:hover {
+  background: linear-gradient(90deg, #bcbcbc, #bcbcbc);
+  border-color: #ffffff;
+  color:#000; /* biar teks tetap jelas */
+}
 /* ===== Desktop ===== */
 @media (min-width:900px){
   .controls{ justify-content:center; flex-wrap:wrap; }
