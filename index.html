@@ -83,69 +83,53 @@
       background:linear-gradient(180deg, #121722, #0f141d);
       border-bottom:1px solid #1f2530;
     }
-.btn-daftar {
-  color: #000;
-  background: linear-gradient(90deg, #f5c242, #d7a600);
-  border: 1px solid #f0b400;
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s ease;
+    /* ===== Toolbar tombol ===== */
+.controls{
+  display:flex; align-items:center; gap:10px;
+  padding:12px;
+  background:linear-gradient(180deg,#121722,#0f141d);
+  border-bottom:1px solid #1f2530;
 }
-.btn-daftar:hover {
-  background: linear-gradient(90deg, #bcbcbc, #bcbcbc);
-  border-color: #ffffff;
+
+/* ===== Tombol dasar + varian ===== */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:10px 14px; border-radius:12px;
+  font-weight:700; font-size:14.5px; line-height:1;
+  color:#111; text-decoration:none; cursor:pointer; user-select:none;
+  border:1px solid transparent;
+  box-shadow:0 6px 14px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.15);
+  transition:transform .06s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
 }
-    .btn-daftar2 {
-  color: #000;
-  background: linear-gradient(90deg, #8fce00, #6aa84f);
-  border: 1px solid #f0b400;
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-  margin-left: 8px; /* kasih jarak dari tombol muat ulang */
+.btn:active{ transform:translateY(1px); }
+@media (hover:hover){
+  .btn:hover{ box-shadow:0 8px 18px rgba(0,0,0,.32); }
 }
-.btn-daftar2:hover {
-  background: linear-gradient(90deg, #bcbcbc, #bcbcbc);
-  border-color: #ffffff;
+
+/* Varian warna */
+.btn--gold  { background:linear-gradient(90deg,#f5c242,#d7a600); border-color:#f0b400; }
+.btn--green { background:linear-gradient(90deg,#8fce00,#6aa84f); border-color:#4a8f1f; }
+.btn--blue  { background:linear-gradient(90deg,#9fc5e8,#3d85c6); border-color:#2f69a2; }
+.btn--red   { background:linear-gradient(90deg,#f44336,#e06666); border-color:#b83f3a; }
+
+/* ===== Desktop ===== */
+@media (min-width:900px){
+  .controls{ justify-content:center; flex-wrap:wrap; }
+  .btn{ font-size:15px; padding:11px 16px; border-radius:14px; }
 }
-    .btn-daftar3 {
-  color: #000;
-  background: linear-gradient(90deg, #9fc5e8, #3d85c6);
-  border: 1px solid #f0b400;
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-  margin-left: 8px; /* kasih jarak dari tombol muat ulang */
+
+/* ===== Mobile ===== */
+@media (max-width:600px){
+  .controls{
+    justify-content:flex-start;
+    gap:8px; padding:8px 10px;
+    overflow:auto hidden; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity;
+  }
+  .controls .btn{ flex:0 0 auto; scroll-snap-align:center; }
+  .btn{ font-size:13px; padding:8px 12px; border-radius:10px; }
 }
-.btn-daftar3:hover {
-  background: linear-gradient(90deg, #bcbcbc, #bcbcbc);
-  border-color: #ffffff;
-}
-    .btn-daftar4 {
-  color: #000;
-  background: linear-gradient(90deg, #f44336, #e06666);
-  border: 1px solid #f0b400;
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-  margin-left: 8px; /* kasih jarak dari tombol muat ulang */
-}
-.btn-daftar4:hover {
-  background: linear-gradient(90deg, #bcbcbc, #bcbcbc);
-  border-color: #ffffff;
-}
+
+
         /* ===== Util classes: tampilkan khusus mobile / desktop ===== */
     .mobile-only{ display:none; }
     .desktop-only{ display:inline; }
